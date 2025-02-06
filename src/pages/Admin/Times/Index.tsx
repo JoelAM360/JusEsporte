@@ -1,55 +1,55 @@
 import { Trophy } from 'lucide-react';
-import React from 'react'
+
 import { LayoutDashboard } from '../Layout.Dashboard';
 import { Link } from 'react-router-dom';
 
-export const ListaDeTimes = () => {
-const teams = [
-  {
-    position: 1,
-    name: "Direito Civil FC",
-    points: 25,
-    games: 10,
-    wins: 8,
-    draws: 1,
-    losses: 1,
-    goalsFor: 24,
-    goalsAgainst: 10,
-  },
-  {
-    position: 2,
-    name: "Penal United",
-    points: 22,
-    games: 10,
-    wins: 7,
-    draws: 1,
-    losses: 2,
-    goalsFor: 20,
-    goalsAgainst: 12,
-  },
-  {
-    position: 3,
-    name: "Trabalhista City",
-    points: 18,
-    games: 10,
-    wins: 5,
-    draws: 3,
-    losses: 2,
-    goalsFor: 18,
-    goalsAgainst: 15,
-  },
-  {
-    position: 4,
-    name: "Tributário Rangers",
-    points: 15,
-    games: 10,
-    wins: 4,
-    draws: 3,
-    losses: 3,
-    goalsFor: 16,
-    goalsAgainst: 18,
-  },
-];
+export const ListaDeTimes: React.FC = () => {
+  const teams = [
+    {
+      position: 1,
+      name: "Direito Civil FC",
+      points: 25,
+      games: 10,
+      wins: 8,
+      draws: 1,
+      losses: 1,
+      goalsFor: 24,
+      goalsAgainst: 10,
+    },
+    {
+      position: 2,
+      name: "Penal United",
+      points: 22,
+      games: 10,
+      wins: 7,
+      draws: 1,
+      losses: 2,
+      goalsFor: 20,
+      goalsAgainst: 12,
+    },
+    {
+      position: 3,
+      name: "Trabalhista City",
+      points: 18,
+      games: 10,
+      wins: 5,
+      draws: 3,
+      losses: 2,
+      goalsFor: 18,
+      goalsAgainst: 15,
+    },
+    {
+      position: 4,
+      name: "Tributário Rangers",
+      points: 15,
+      games: 10,
+      wins: 4,
+      draws: 3,
+      losses: 3,
+      goalsFor: 16,
+      goalsAgainst: 18,
+    },
+  ];
 
   return (
     <LayoutDashboard>
@@ -116,4 +116,4 @@ const teams = [
       </div>
     </LayoutDashboard>
   );
-}
+};

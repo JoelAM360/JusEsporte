@@ -12,7 +12,7 @@ import {
 import { useUsuarioLogado } from "../shared/hooks";
 import { useEffect, useState } from "react";
 import { CreateCategoria } from "../pages/Admin/Categorias/CreateCategoria";
-import TabelaCategorias from "../pages/Admin/Categorias/Index";
+import TabelaCategorias from "../pages/Admin/Categorias/ListarCategorias";
 import { EditCategoria } from "../pages/Admin/Categorias/Edit";
 import { TabelaTorneio } from "../pages/Admin/Torneios/Index";
 import { CreateTorneio } from "../pages/Admin/Torneios/CreateToreio";
@@ -25,12 +25,11 @@ import { ListPartidas } from "../pages/Admin/Partidas/ListarPartidas";
 
 export function RouteNavegation() {
   const { user } = useUsuarioLogado();
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-      setIsAuthenticated(!!user);
+    setIsAuthenticated(!!user);
   }, [user]);
-
 
   return (
     <Routes>
@@ -52,7 +51,7 @@ export function RouteNavegation() {
       <Route path="/paineladmin" element={<AdminDashboard />} />
       <Route path="/categorias/" element={<TabelaCategorias />} />
       <Route path="/categorias/create" element={<CreateCategoria />} />
-      <Route path="/categorias/edit" element={<EditCategoria />} />
+      <Route path="/categorias/edit/:id" element={<EditCategoria />} />
       <Route path="/torneios/" element={<TabelaTorneio />} />
       <Route path="/torneios/create" element={<CreateTorneio />} />
       <Route path="/torneios/edit/:id" element={<EditTorneio />} />

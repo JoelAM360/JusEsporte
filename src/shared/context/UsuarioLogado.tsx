@@ -26,7 +26,6 @@ export const UsuarioLogadoProvider: React.FC<IUsuarioLogadoProps> = ({
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
 
-    console.log("Stored User:", storedUser); // Veja o que está sendo retornado
 
     if (storedUser && storedToken) {
       try {
@@ -35,9 +34,7 @@ export const UsuarioLogadoProvider: React.FC<IUsuarioLogadoProps> = ({
           navigate("/dashboard");
         }
 
-        console.log("Parsed User:", userData);
-
-        setUser(userData); // Definindo o user corretamente
+        setUser(userData);
       } catch (error) {
         console.error("Erro ao parsear o user:", error);
       }
