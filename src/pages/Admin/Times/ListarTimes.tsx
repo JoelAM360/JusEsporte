@@ -1,65 +1,127 @@
 import { Trophy } from "lucide-react";
 
 import { LayoutDashboard } from "../Layout.Dashboard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { ITime, TimeService } from "../../../shared/services/Time/TimeService";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { useUsuarioLogado } from "../../../shared/hooks";
+import Modal from "../../../shared/components/ModalElement";
 
 export const ListaDeTimes: React.FC = () => {
-  const teams = [
-    {
-      position: 1,
-      name: "Direito Civil FC",
-      points: 25,
-      games: 10,
-      wins: 8,
-      draws: 1,
-      losses: 1,
-      goalsFor: 24,
-      goalsAgainst: 10,
-    },
-    {
-      position: 2,
-      name: "Penal United",
-      points: 22,
-      games: 10,
-      wins: 7,
-      draws: 1,
-      losses: 2,
-      goalsFor: 20,
-      goalsAgainst: 12,
-    },
-    {
-      position: 3,
-      name: "Trabalhista City",
-      points: 18,
-      games: 10,
-      wins: 5,
-      draws: 3,
-      losses: 2,
-      goalsFor: 18,
-      goalsAgainst: 15,
-    },
-    {
-      position: 4,
-      name: "Tributário Rangers",
-      points: 15,
-      games: 10,
-      wins: 4,
-      draws: 3,
-      losses: 3,
-      goalsFor: 16,
-      goalsAgainst: 18,
-    },
-  ];
+  const [times, setTimes] = useState<ITime[]>();
+  const [timeExcluir, setTimeExcluir] = useState<ITime | null>();
+  const { logout } = useUsuarioLogado();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const [loading, setLoanding] = useState(false);
 
+  useEffect(() => {
+    const fecthAllTimes = async () => {
+      try {
+        setLoanding(true);
+        const timesMock = await TimeService.getAll();
+        setTimes(timesMock);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          // Erro vindo do backend (validação ou outros erros)
+          const status = error.response?.status;
+
+          if (status === 401) {
+            toast.error("Sessão expirada. Faça login novamente.");
+            logout(); // Remove o token salvo
+            navigate("/login"); // Redireciona para login
+            return;
+          }
+
+          toast.error(
+            "Alguma coisa correu mal. Verfique a sua conexão a internet"
+          );
+        }
+      } finally {
+        setLoanding(false);
+      }
+    };
+
+    fecthAllTimes();
+  }, [logout, navigate]);
+
+  if (loading) {
+    return (
+      <LayoutDashboard>
+        <p>Carregando...</p>
+      </LayoutDashboard>
+    );
+  }
+
+  if (!times) {
+    return (
+      <LayoutDashboard>
+        <p className="mb-6">Nenhum time encontrado</p>
+        <Link
+          to={"/times/create"}
+          className="bg-indigo-500 text-white py-2 mb-4 px-4 rounded-md hover:bg-indigo-600">
+          Criar Time
+        </Link>
+      </LayoutDashboard>
+    );
+  }
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleExcluir = (time: ITime) => {
+    setTimeExcluir(time);
+    toggleModal();
+  };
+
+  const confirmarExcluir = async () => {
+    if (timeExcluir) {
+      try {
+        // Chama o serviço de exclusão da API
+        await TimeService.Delete(timeExcluir.id);
+        setTimes(times.filter((time) => time.id !== timeExcluir.id)); // Atualiza o estado após a exclusão
+        setTimeExcluir(null);
+        toggleModal();
+
+        toast.warning("Time Excluido com sucesso");
+      } catch (error) {
+        console.error("Erro ao excluir Time", error);
+        // Aqui você pode mostrar uma mensagem de erro para o usuário
+      }
+    }
+  };
   return (
     <LayoutDashboard>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+        title="Confirmar Exclusão">
+        <p>
+          Você tem certeza que deseja excluir o Time "{timeExcluir?.nome}
+          "?
+        </p>
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={toggleModal}
+            className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600">
+            Cancelar
+          </button>
+          <button
+            onClick={confirmarExcluir}
+            className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">
+            Confirmar
+          </button>
+        </div>
+      </Modal>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center space-x-4 mb-8">
           <Trophy className="h-8 w-8 text-indigo-600" />
           <h1 className="text-3xl font-bold text-gray-900">Todos os Times</h1>
         </div>
         <Link
-          to={"/torneios/create"}
+          to={"/Times/create"}
           className="bg-indigo-500 text-white py-2 mb-4 px-4 rounded-md hover:bg-indigo-600">
           Criar Time
         </Link>
@@ -72,12 +134,22 @@ export const ListaDeTimes: React.FC = () => {
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Pos
+                    ID
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Time
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Categoria
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
                   </th>
                   <th
                     scope="col"
@@ -87,27 +159,33 @@ export const ListaDeTimes: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {teams.map((team) => (
-                  <tr key={team.name} className="hover:bg-gray-50">
+                {times.map((time) => (
+                  <tr key={time.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {team.position}º
+                      {time.id}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {team.name}
+                      {time.nome}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {time.categoria.titulo_categoria}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {time.status}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center font-bold">
                       <Link
-                        to={`/times/edit/${team.name}`}
+                        to={`/times/edit/${time.id}`}
                         className="bg-indigo-500 text-white px-4 py-1 rounded-md hover:bg-indigo-600 focus:outline-none">
-                        Jogadores
+                        Editar
                       </Link>
                       <Link
-                        to={`/torneios/classificacao/${team.name}`}
+                        to={`/Times/classificacao/${time.id}`}
                         className="bg-blue-500 text-white px-4 py-1 m-2 rounded-md hover:bg-blue-600 focus:outline-none">
                         Ver Detalhes
                       </Link>
                       <button
-                        onClick={() => alert("")}
+                        onClick={() => handleExcluir(time)}
                         className="ml-2 bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600 focus:outline-none">
                         Excluir
                       </button>

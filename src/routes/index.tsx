@@ -8,20 +8,22 @@ import {
   Register,
   Statistics,
   ConfirmaCode,
+  Classificacao,
+  CreateCategoria,
+  CreateTimes,
+  CreateTorneio,
+  EditCategoria,
+  EditTimes,
+  EditTorneio,
+  FormCreatePartida,
+  ListPartidas,
+  ListaDeJogadores,
+  ListaDeTimes,
+  TabelaTorneio,
+  TabelaCategorias,
 } from "../pages/";
 import { useUsuarioLogado } from "../shared/hooks";
 import { useEffect, useState } from "react";
-import { CreateCategoria } from "../pages/Admin/Categorias/CreateCategoria";
-import TabelaCategorias from "../pages/Admin/Categorias/ListarCategorias";
-import { EditCategoria } from "../pages/Admin/Categorias/Edit";
-import { TabelaTorneio } from "../pages/Admin/Torneios/ListarTorneios";
-import { CreateTorneio } from "../pages/Admin/Torneios/CreateToreio";
-import { EditTorneio } from "../pages/Admin/Torneios/EditTorneio";
-import { Classificacao } from "../pages/Admin/Torneios/Show";
-import { ListaDeTimes } from "../pages/Admin/Times/ListarTimes";
-import { ListaDeJogadores } from "../pages/Admin/Jogadores/Index";
-import { FormCreatePartida } from "../pages/Admin/Partidas/CreatePartida";
-import { ListPartidas } from "../pages/Admin/Partidas/ListarPartidas";
 
 export function RouteNavegation() {
   const { user } = useUsuarioLogado();
@@ -57,6 +59,8 @@ export function RouteNavegation() {
       <Route path="/torneios/edit/:id" element={<EditTorneio />} />
       <Route path="/torneios/classificacao/:id" element={<Classificacao />} />
       <Route path="/times/" element={<ListaDeTimes />} />
+      <Route path="/times/create" element={<CreateTimes />} />
+      <Route path="/times/edit/:id" element={<EditTimes />} />
       <Route path="/jogadores/" element={<ListaDeJogadores />} />
       <Route path="/partidas" element={<ListPartidas partidas={[]} />} />
       <Route path="/partidas/criar" element={<FormCreatePartida />} />

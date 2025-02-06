@@ -6,3 +6,16 @@ export * from "./Home/Statistics";
 export * from "./Auth/Register";
 export * from "./Home/Dashboard";
 export * from "./Admin/AdminDashboard"
+export * from "./Admin/Categorias/CreateCategoria";
+export * from "./Admin/Categorias/ListarCategorias";
+export * from "./Admin/Categorias/Edit";
+export * from "./Admin/Torneios/ListarTorneios";
+export * from "./Admin/Torneios/CreateToreio";
+export * from "./Admin/Torneios/EditTorneio";
+export * from "./Admin/Torneios/Show";
+export * from "./Admin/Times/ListarTimes";
+export * from "./Admin/Jogadores/Index";
+export * from "./Admin/Partidas/CreatePartida";
+export * from "./Admin/Partidas/ListarPartidas";
+export * from "./Admin/Times/CreateTimes";
+export * from "./Admin/Times/EditTimes";

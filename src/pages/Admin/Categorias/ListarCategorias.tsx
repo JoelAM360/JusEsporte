@@ -8,7 +8,7 @@ import {
 } from "../../../shared/services/Categoria/CategoriaService";
 import { toast } from "react-toastify";
 
-const TabelaCategorias: React.FC = () => {
+export const TabelaCategorias: React.FC = () => {
   // Estado para armazenar as categorias
   const [categorias, setCategorias] = useState<ICategoria[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
