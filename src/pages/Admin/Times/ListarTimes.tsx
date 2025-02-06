@@ -1,7 +1,7 @@
-import { Trophy } from 'lucide-react';
+import { Trophy } from "lucide-react";
 
-import { LayoutDashboard } from '../Layout.Dashboard';
-import { Link } from 'react-router-dom';
+import { LayoutDashboard } from "../Layout.Dashboard";
+import { Link } from "react-router-dom";
 
 export const ListaDeTimes: React.FC = () => {
   const teams = [
@@ -58,8 +58,13 @@ export const ListaDeTimes: React.FC = () => {
           <Trophy className="h-8 w-8 text-indigo-600" />
           <h1 className="text-3xl font-bold text-gray-900">Todos os Times</h1>
         </div>
+        <Link
+          to={"/torneios/create"}
+          className="bg-indigo-500 text-white py-2 mb-4 px-4 rounded-md hover:bg-indigo-600">
+          Criar Time
+        </Link>
 
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white rounded-lg mt-5 shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

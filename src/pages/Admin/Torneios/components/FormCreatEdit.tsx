@@ -7,8 +7,7 @@ interface ITorneioFormProps {
   quantidadeTimes: number;
   dataInicio: string;
   dataTermino: string;
-  icon: string;
-  onSubmit: (data: any) => void; 
+  onSubmit: (data: any) => void;
 }
 
 export const FormCreateEditTorneio: React.FC<ITorneioFormProps> = ({
@@ -17,7 +16,6 @@ export const FormCreateEditTorneio: React.FC<ITorneioFormProps> = ({
   quantidadeTimes,
   dataInicio,
   dataTermino,
-  icon,
   onSubmit,
 }: ITorneioFormProps) => {
   const [nome, setNome] = useState(nomeTorneio);
@@ -25,17 +23,17 @@ export const FormCreateEditTorneio: React.FC<ITorneioFormProps> = ({
   const [quantidadeDeTimes, setQuantidadeDeTimes] = useState(quantidadeTimes);
   const [inicio, setInicio] = useState(dataInicio);
   const [termino, setTermino] = useState(dataTermino);
-  const [icone, setIcone] = useState(icon);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const torneioData = {
+      categoria_id: 2,
       nome,
       jornadas: jornadasCount,
-      quantidadeTimes: quantidadeDeTimes,
-      dataInicio: inicio,
-      dataTermino: termino,
-      icon: icone,
+      quantidade_times: quantidadeDeTimes,
+      data_inicio: inicio,
+      data_termino: termino,
+      status: "ativo",
     };
     onSubmit(torneioData);
   };
@@ -86,19 +84,10 @@ export const FormCreateEditTorneio: React.FC<ITorneioFormProps> = ({
         type="date"
       />
 
-      <InputElement
-        placeholder="Ícone do Torneio (nome do arquivo)"
-        value={icone}
-        onChange={(newValue) => setIcone(newValue)}
-        label="Ícone"
-        type="file"
-        withLabel={true}
-      />
-
       <button
         type="submit"
-        className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-        {nome ? "Editar Torneio" : "Cadastrar Torneio"}
+        className="w-full bg-blue-500 col-span-3 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+        Cadastrar Torneio
       </button>
     </form>
   );
