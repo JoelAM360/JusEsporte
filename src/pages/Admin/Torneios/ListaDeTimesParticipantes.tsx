@@ -1,27 +1,31 @@
 import { Trophy } from "lucide-react";
 
 import { LayoutDashboard } from "../Layout.Dashboard";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ITime, TimeService } from "../../../shared/services/Time/TimeService";
+import { ITime } from "../../../shared/services/Time/TimeService";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useUsuarioLogado } from "../../../shared/hooks";
 import Modal from "../../../shared/components/ModalElement";
+import { TimesDeTorneioService } from "../../../shared/services/TimesDeTorneio/TimesDeTorneioService";
 
-export const ListaDeTimes: React.FC = () => {
+export const ListaDeTimesParticipantes: React.FC = () => {
   const [times, setTimes] = useState<ITime[]>();
   const [timeExcluir, setTimeExcluir] = useState<ITime | null>();
   const { logout } = useUsuarioLogado();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoanding] = useState(false);
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     const fecthAllTimes = async () => {
       try {
         setLoanding(true);
-        const timesMock = await TimeService.getAll();
+        const timesMock = await TimesDeTorneioService.getByIdWithTimes(
+          Number(id)
+        );
         setTimes(timesMock);
       } catch (error) {
         if (error instanceof AxiosError) {

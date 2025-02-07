@@ -143,6 +143,11 @@ export const TabelaTorneio = () => {
                         className="bg-blue-500 text-white px-4 py-1 m-2 rounded-md hover:bg-blue-600 focus:outline-none">
                         Classificação
                       </Link>
+                      <Link
+                        to={`/torneios/times/${torneio.id}`}
+                        className="bg-blue-500 text-white px-4 py-1 m-2 rounded-md hover:bg-blue-600 focus:outline-none">
+                        Solicitações
+                      </Link>
                       <button
                         onClick={() => handleExcluir(torneio)}
                         className="ml-2 bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600 focus:outline-none">

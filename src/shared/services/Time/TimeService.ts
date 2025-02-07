@@ -1,11 +1,13 @@
-import { Api } from "../ApiConfig";
+import { Api, getAuthHeaders } from "../ApiConfig";
 import { ICategoria } from "../Categoria/CategoriaService";
+import { ITorneio } from "../Torneio/TorneioService";
 export interface ITime {
   id: number;
   categoria_id: number; // Relacionamento com a categoria
   advogado_id: number; //Relacionamento com advogado
   nome: string;
   categoria: ICategoria;
+  torneios?: ITorneio;
   status: "pendente" | "ativo" | "desativado";
 }
 
@@ -89,9 +91,16 @@ const getAll = async (): Promise<ITime[]> => {
   return data ?? [];
 };
 
+const getTimeByIdWithTorneios = async (id: number): Promise<ITime[]> => {
+  const headers = await getAuthHeaders();
+  const { data } = await Api().get(`/time/${id}`, { headers });
+  return data ?? [];
+};
+
 export const TimeService = {
   Create,
   Update,
   Delete,
   getAll,
+  getTimeByIdWithTorneios,
 };
